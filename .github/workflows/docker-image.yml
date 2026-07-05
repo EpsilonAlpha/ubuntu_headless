@@ -40,7 +40,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         push: false
         load: true
@@ -55,7 +55,7 @@ jobs:
         severity: 'CRITICAL,HIGH'
 
     - name: Push
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         push: true
         tags: ${{ secrets.DOCKER_USER }}/${{ env.IMAGENAME }}:${{ env.IMAGETAG }}
