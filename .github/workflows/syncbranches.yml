@@ -6,31 +6,40 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   # This workflow syncs master to docker branch
   merge_docker:
     name: Sync Docker Branch
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ github.token }}
 
       - name: Merge master -> docker
-        uses: devmasx/merge-branch@v1.3.1
-        with:
-          type: now
-          from_branch: master
-          target_branch: docker
-          github_token: ${{ github.token }}
+        run: |
+          git config user.email "github-actions@github.com"
+          git config user.name "github-actions"
+          git checkout docker
+          git merge master --ff-only
+          git push
   merge_github:
     name: Sync GitHub Branch
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ github.token }}
 
       - name: Merge master -> github
-        uses: devmasx/merge-branch@v1.3.1
-        with:
-          type: now
-          from_branch: master
-          target_branch: github
-          github_token: ${{ github.token }}
+        run: |
+          git config user.email "github-actions@github.com"
+          git config user.name "github-actions"
+          git checkout github
+          git merge master --ff-only
+          git push
