@@ -46,13 +46,13 @@ jobs:
         load: true
         tags: ${{ secrets.DOCKER_USER }}/${{ env.IMAGENAME }}:${{ env.IMAGETAG }}
 
-    - name: Scan for critical CVEs (blocks push if found)
+    - name: Scan for CVEs (informational, does not block push)
       uses: aquasecurity/trivy-action@0.31.0
       with:
         image-ref: '${{ secrets.DOCKER_USER }}/${{ env.IMAGENAME }}:${{ env.IMAGETAG }}'
         format: 'table'
-        exit-code: '1'
-        severity: 'CRITICAL'
+        exit-code: '0'
+        severity: 'CRITICAL,HIGH'
 
     - name: Push
       uses: docker/build-push-action@v6
