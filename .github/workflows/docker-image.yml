@@ -47,7 +47,7 @@ jobs:
         tags: ${{ secrets.DOCKER_USER }}/${{ env.IMAGENAME }}:${{ env.IMAGETAG }}
 
     - name: Scan for CVEs (informational, does not block push)
-      uses: aquasecurity/trivy-action@0.36.0
+      uses: aquasecurity/trivy-action@latest
       with:
         image-ref: '${{ secrets.DOCKER_USER }}/${{ env.IMAGENAME }}:${{ env.IMAGETAG }}'
         format: 'table'
