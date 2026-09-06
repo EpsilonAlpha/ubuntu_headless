@@ -1,15 +1,16 @@
-# start from Ubuntu Image latest
+# Use the current Ubuntu base image.
 FROM ubuntu:latest
 
-# refresh the things
-RUN apt-get update 
-# language defined as "german"
-RUN apt-get install -y --no-install-recommends locales && \
-	localedef -i de_DE -c -f UTF-8 -A /usr/share/locale/locale.alias de_DE.UTF-8
-ENV LANG de_DE.utf8
+# Install locale support and generate the German UTF-8 locale.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends locales && \
+    sed -i 's/^# \(de_DE.UTF-8 UTF-8\)/\1/' /etc/locale.gen && \
+    locale-gen
+ENV LANG=de_DE.UTF-8
+ENV LC_ALL=de_DE.UTF-8
 
-# terminalstuff
+# Install terminal utilities.
 RUN apt-get install -y --no-install-recommends screen tree tmux bmon vim fping dnsutils
 
-# clean up after all installs
+# Remove package lists to reduce the final image size.
 RUN rm -rf /var/lib/apt/lists/*
